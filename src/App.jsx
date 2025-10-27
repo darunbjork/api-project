@@ -43,8 +43,6 @@ function App() {
 
       {!loading && (
         <div>
-          <p>Found {data.length} items</p>
-
           {!loading && (
             <div>
               <p>Found {data.length} users</p>
