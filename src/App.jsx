@@ -5,6 +5,7 @@ import ItemCard from "./ItemCard";
 function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -14,6 +15,7 @@ function App() {
       );
       const result = await response.json();
       setData(result);
+      setLastUpdate(new Date().toLocaleTimeString());
       setLoading(false);
     } catch (error) {
       console.log("Error fetching data, try again", error);
@@ -29,6 +31,7 @@ function App() {
     <div style={{ padding: "20px" }}>
       <h1>My API App</h1>
       <button onClick={fetchData}>Refresh Data</button>
+      {lastUpdate && <p>Last updated: {lastUpdate}</p>}
 
       {loading && <p>Loading...</p>}
 
