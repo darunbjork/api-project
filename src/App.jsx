@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import ItemCard from "./ItemCard";
 
 function App() {
   const [data, setData] = useState([]);
@@ -25,12 +26,26 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1>My API project</h1>
-      <button onClick={fetchData}>Get Data</button>
+    <div style={{ padding: "20px" }}>
+      <h1>My API App</h1>
+      <button onClick={fetchData}>Refresh Data</button>
 
-      <h3>Loading {loading && <p>...Loading</p>}</h3>
-      <h3>{!loading && <p> Data {data.length} users</p>}</h3>
+      {loading && <p>Loading...</p>}
+
+      {!loading && (
+        <div>
+          <p>Found {data.length} items</p>
+
+          {!loading && (
+            <div>
+              <p>Found {data.length} users</p>
+              {data.map((item) => (
+                <ItemCard key={item.id} item={item} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
