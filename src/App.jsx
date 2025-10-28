@@ -1,56 +1,46 @@
+import { useState, useEffect } from "react";
 import "./App.css";
-import { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
 
 function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
+
     try {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users"
       );
+
       const result = await response.json();
+
       setData(result);
-      setLastUpdate(new Date().toLocaleTimeString());
       setLoading(false);
     } catch (error) {
-      console.log("Error fetching data, try again", error);
+      console.log("Fetching data failed", error);
       setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
-
-    const interval = setInterval(() => {
-      fetchData();
-    }, 3000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>My API App</h1>
-      <button onClick={fetchData}>Refresh Data</button>
-      {lastUpdate && <p>Last updated: {lastUpdate}</p>}
-
-      {loading && <p>Loading...</p>}
+    <div>
+      <h1>My API APP</h1>
+      <button onClick={fetchData}>Get Data</button>
+      <p>{loading && <p>Loading...</p>}</p>
 
       {!loading && (
         <div>
-          {!loading && (
-            <div>
-              <p>Found {data.length} users</p>
-              {data.map((item) => (
-                <ItemCard key={item.id} item={item} />
-              ))}
-            </div>
-          )}
+          <p>Found {data.length} users</p>
+
+          {data.map((item) => (
+            <ItemCard key={item.id} user={item} />
+          ))}
         </div>
       )}
     </div>
