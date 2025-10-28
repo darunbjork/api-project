@@ -1,10 +1,8 @@
-function ItemCard({ items }) {
+function ItemCard({ props }) {
   return (
-    <div>
-      <p>First Name: {items.name.first}</p>
-      <p>Last Name: {items.name.last}</p>
-      <p> Street: {items.location.street.name}</p>
-      <p>City: {items.location.city}</p>
+    <div className="items-card">
+      <p>Name: {props.name}</p>
+      <p>City: {props.address.city}</p>
     </div>
   );
 }

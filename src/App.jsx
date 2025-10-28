@@ -1,25 +1,26 @@
-import "./App.css";
 import { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
+import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [laoding, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://randomuser.me/api/?results=10");
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users"
+      );
       const result = await response.json();
-
-      setData(result.results);
+      setData(result);
       console.log(result);
-      setLoading(false);
       setLastUpdate(new Date().toLocaleTimeString());
+      setLoading(false);
     } catch (error) {
-      console.log("Fetching Data Failed", error);
+      console.log("Fetching data failed", error);
       setLoading(false);
     }
   };
@@ -28,27 +29,23 @@ function App() {
     fetchData();
 
     const interval = setInterval(() => {
-      console.log("--- Automatic refresh running! ---");
       fetchData();
-    }, 30000); // 30000 = 30 seconds
+    }, 30000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div>
-      <h1>User API</h1>
-      <button onClick={fetchData}>Fetch User API</button>
-      {lastUpdate && <p>Last updated: {lastUpdate}</p>}
+      <h1>MY API APP</h1>
+      <button onClick={fetchData}>Fetch data</button>
 
-      {!loading && (
-        <div>
-          <p>Found {data.length} users</p>
-          {data.map((user, index) => (
-            <ItemCard items={user} key={index} />
-          ))}
-        </div>
-      )}
+      {lastUpdate && <p>Last Update: {lastUpdate}</p>}
+
+      {laoding && <p>Loading...</p>}
+      {data.map((user) => (
+        <ItemCard key={user.id} props={user} />
+      ))}
     </div>
   );
 }
